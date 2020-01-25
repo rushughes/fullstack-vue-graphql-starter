@@ -2,7 +2,7 @@
   "name": "fullstack-vue-graphql-starter",
   "version": "1.0.0",
   "description": "Course from https://www.udemy.com/course/full-stack-vue-with-graphql-the-ultimate-guide/learn/lecture/11526880#overview",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
     "client": "cd client && npm start",

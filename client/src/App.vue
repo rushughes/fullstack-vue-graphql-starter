@@ -63,7 +63,9 @@
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
-      <router-view />
+      <transition name="fade">
+        <router-view />
+      </transition>
     </v-content>
   </v-app>
 </template>
@@ -99,3 +101,20 @@ export default {
   }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: opacity;
+  transition-dutration: 0.25s;
+}
+
+.fade-enter-active {
+  transiation-delay: 0.25s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>

@@ -28,7 +28,7 @@
       </v-card>
     </v-navigation-drawer>
 
-    <v-toolbar color="primary" dark>
+    <v-app-bar color="primary" dark app>
       <v-app-bar-nav-icon @click="toggleSideNav"></v-app-bar-nav-icon>
       <v-toolbar-title class="hidden-xs-only">
         <router-link to="/" tag="span" style="cursor: pointer">
@@ -61,10 +61,10 @@
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
-    </v-toolbar>
-    <main>
+    </v-app-bar>
+    <v-content>
       <router-view />
-    </main>
+    </v-content>
   </v-app>
 </template>
 

@@ -24,6 +24,25 @@
               {{ item.title }}
             </v-list-item-title>
           </v-list-item>
+
+          <v-list-item key="Profile" to="/profile" v-if="user">
+            <v-list-item-icon>
+              <v-icon>mdi-face-profile</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Profile
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item key="Signout" to="/signout" v-if="user">
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Sign Out
+            </v-list-item-title>
+          </v-list-item>
+
         </v-list>
       </v-card>
     </v-navigation-drawer>
@@ -71,6 +90,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "App",
   data() {
@@ -79,19 +100,37 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["user"]),
     horizontalNavItems() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open-outline", title: "Sign In", link: "/signin" },
         { icon: "mdi-pencil", title: "Sign Up", link: "/signup" }
       ];
+      if (this.user) {
+        items = [
+          { icon: "mdi-chat", title: "Posts", link: "/posts" },
+          { icon: "mdi-folder-plus", title: "Create Post", link: "/post/add" },
+          { icon: "mdi-face-profile", title: "Profile", link: "/profile" },
+          { icon: "mdi-logout", title: "Sign Out", link: "/signout" },
+        ];
+      }
+      return items;
     },
     sideNavItems() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open-outline", title: "Sign In", link: "/signin" },
         { icon: "mdi-pencil", title: "Sign Up", link: "/signup" }
       ];
+      // if (this.user) {
+      //   items = [
+      //     { icon: "mdi-chat", title: "Posts", link: "/posts" },
+      //     { icon: "mdi-folder-plus", title: "Create Post", link: "/post/add" },
+      //     { icon: "mdi-face-profile", title: "Profile", link: "/profile" },
+      //   ];
+      // }
+      return items;
     }
   },
   methods: {

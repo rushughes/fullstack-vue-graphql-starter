@@ -7,8 +7,7 @@
 <script>
 export default {
   name: "SignUp"
-}
+};
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>

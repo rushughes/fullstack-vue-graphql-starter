@@ -34,7 +34,7 @@
             </v-list-item-title>
           </v-list-item>
 
-          <v-list-item key="Signout" to="/signout" v-if="user">
+          <v-list-item key="Signout" to="/signout" v-if="user" @click="handleSignOutUser">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
@@ -134,6 +134,9 @@ export default {
     }
   },
   methods: {
+    handleSignOutUser() {
+      this.$store.dispatch("signOutUser");
+    },
     toggleSideNav() {
       this.sideNav = !this.sideNav;
     }

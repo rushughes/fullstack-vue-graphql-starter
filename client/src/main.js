@@ -15,7 +15,6 @@ export const defaultClient = new ApolloClient({
     credentials: "include"
   },
   request: operation => {
-
     if (!localStorage.token) {
       localStorage.setItem("token", "");
     }
@@ -24,7 +23,7 @@ export const defaultClient = new ApolloClient({
       headers: {
         authorization: localStorage.getItem("token")
       }
-    })
+    });
   },
   onError: ({ graphQLErrors, networkError }) => {
     if (networkError) {
@@ -47,5 +46,8 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
+  created() {
+    this.$store.dispatch("getCurrentUser");
+  }
 }).$mount("#app");

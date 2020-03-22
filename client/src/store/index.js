@@ -43,14 +43,14 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log(data);
           console.log(commit);
+          localStorage.setItem("token", data.signinUser.token);
         })
         .catch(err => {
           console.error(err);
         });
     }
   },
-  modules: {
-  },
+  modules: {},
   getters: {
     posts: state => state.posts,
     loading: state => state.loading

@@ -101,6 +101,19 @@
           <h3>You are now signed in!</h3>
           <v-btn dark flat @click="authSnackbar = false">Close</v-btn>
         </v-snackbar>
+
+        <v-snackbar
+          color="warning"
+          bottom
+          left
+          v-model="authErrorSnackbar"
+          :timeout="5000"
+          v-if="authError"
+        >
+          <v-icon class="mr-3">mdi-cancel</v-icon>
+          <h3>You are now signed in!</h3>
+          <v-btn dark flat to="/signin">Signin</v-btn>
+        </v-snackbar>
       </v-container>
     </v-content>
   </v-app>
@@ -114,7 +127,8 @@ export default {
   data() {
     return {
       sideNav: false,
-      authSnackbar: false
+      authSnackbar: false,
+      authErrorSnackbar: false
     };
   },
   watch: {
@@ -122,10 +136,15 @@ export default {
       if (oldValue === null) {
         this.authSnackbar = true;
       }
+    },
+    authError(value) {
+      if (value !== null) {
+        this.authErrorSnackbar = true;
+      }
     }
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "authError"]),
     horizontalNavItems() {
       let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },

@@ -5,6 +5,13 @@
         <h1>Welcome Back!</h1>
       </v-flex>
     </v-layout>
+
+    <v-layout new wrap v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <form-alert :message="error.message"></form-alert>
+      </v-flex>
+    </v-layout>
+
     <v-layout row wrap>
       <v-flex xs12 sm6 offset-sm3>
         <v-card color="secondary" dark>
@@ -12,21 +19,35 @@
             <v-form @submit.prevent="handleSignInUser">
               <v-layout row>
                 <v-flex xs12>
-                  <v-text-field v-model="username" prepend-icon="mdi-account" label="Username" type="text" required>
+                  <v-text-field
+                    v-model="username"
+                    prepend-icon="mdi-account"
+                    label="Username"
+                    type="text"
+                    required
+                  >
                   </v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row>
                 <v-flex xs12>
-                  <v-text-field v-model="password" prepend-icon="mdi-lock" label="Password" type="password" required>
+                  <v-text-field
+                    v-model="password"
+                    prepend-icon="mdi-lock"
+                    label="Password"
+                    type="password"
+                    required
+                  >
                   </v-text-field>
                 </v-flex>
               </v-layout>
               <v-layout row>
                 <v-flex xs12>
                   <v-btn color="accent" type="submit">Sign In</v-btn>
-                  <h3>Don't have an account?
-                  <router-link to="/signup">Sign Up</router-link></h3>
+                  <h3>
+                    Don't have an account?
+                    <router-link to="/signup">Sign Up</router-link>
+                  </h3>
                 </v-flex>
               </v-layout>
             </v-form>
@@ -46,10 +67,10 @@ export default {
     return {
       username: "",
       password: ""
-    }
+    };
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "error"])
   },
   watch: {
     user(value) {
@@ -59,14 +80,13 @@ export default {
   },
   methods: {
     handleSignInUser() {
-      this.$store.dispatch('signInUser', {
+      this.$store.dispatch("signInUser", {
         username: this.username,
         password: this.password
-      })
+      });
     }
   }
-}
+};
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>

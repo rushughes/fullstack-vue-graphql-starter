@@ -34,7 +34,12 @@
             </v-list-item-title>
           </v-list-item>
 
-          <v-list-item key="Signout" to="/signout" v-if="user" @click="handleSignOutUser">
+          <v-list-item
+            key="Signout"
+            to="/signout"
+            v-if="user"
+            @click="handleSignOutUser"
+          >
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
@@ -42,7 +47,6 @@
               Sign Out
             </v-list-item-title>
           </v-list-item>
-
         </v-list>
       </v-card>
     </v-navigation-drawer>
@@ -112,7 +116,7 @@ export default {
           { icon: "mdi-chat", title: "Posts", link: "/posts" },
           { icon: "mdi-folder-plus", title: "Create Post", link: "/post/add" },
           { icon: "mdi-face-profile", title: "Profile", link: "/profile" },
-          { icon: "mdi-logout", title: "Sign Out", link: "/signout" },
+          { icon: "mdi-logout", title: "Sign Out", link: "/signout" }
         ];
       }
       return items;

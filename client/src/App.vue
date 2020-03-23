@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer app temporary fixed v-model="sideNav">
-      <v-toolbar color="accent" dark flat>
+      <v-toolbar color="accent" dark text>
         <v-icon @click="toggleSideNav">mdi-menu</v-icon>
         <router-link to="/" tag="span" style="cursor: pointer">
           <h1 class="title pl-3">VueShare</h1>
@@ -62,7 +62,7 @@
       <v-spacer></v-spacer>
 
       <v-text-field
-        flat
+        text
         prepend-icon="mdi-magnify"
         placeholder="Search posts"
         color="accent"
@@ -99,7 +99,7 @@
         >
           <v-icon class="mr-3">mdi-check-circle</v-icon>
           <h3>You are now signed in!</h3>
-          <v-btn dark flat @click="authSnackbar = false">Close</v-btn>
+          <v-btn dark text @click="authSnackbar = false">Close</v-btn>
         </v-snackbar>
 
         <v-snackbar
@@ -112,7 +112,7 @@
         >
           <v-icon class="mr-3">mdi-cancel</v-icon>
           <h3>You are now signed in!</h3>
-          <v-btn dark flat to="/signin">Signin</v-btn>
+          <v-btn dark text to="/signin">Signin</v-btn>
         </v-snackbar>
       </v-container>
     </v-content>

@@ -31,7 +31,7 @@ const getUser = async token => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  formatError: error => ({
+  formatError:  error => ({
      name: error.name,
      message: error.message
   }),

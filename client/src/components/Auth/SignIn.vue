@@ -52,7 +52,7 @@
                 <v-flex xs12>
                   <v-btn
                     :loading="loading"
-                    :disabled="!isFormValid"
+                    :disabled="!isFormValid || loading"
                     color="accent"
                     type="submit"
                   >

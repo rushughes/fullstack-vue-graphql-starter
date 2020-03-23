@@ -11,7 +11,7 @@
       v-model="isFormValid"
       lazy-validation
       ref="form"
-      @submit.prevent="handleAddPOst"
+      @submit.prevent="handleAddPost"
     >
       <v-text-field
         :rules="titleRules"
@@ -100,7 +100,20 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["loading"])
+    ...mapGetters(["user", "loading"])
   },
+  methods: {
+    handleAddPost() {
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("addPost", {
+          title: this.title,
+          imageUrl: this.imageUrl,
+          categories: this.categories,
+          description: this.description,
+          creatorId: this.user._id
+        });
+      }
+    }
+  }
 };
 </script>

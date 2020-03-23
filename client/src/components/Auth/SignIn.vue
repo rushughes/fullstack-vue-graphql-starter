@@ -16,10 +16,16 @@
       <v-flex xs12 sm6 offset-sm3>
         <v-card color="secondary" dark>
           <v-container>
-            <v-form @submit.prevent="handleSignInUser">
+            <v-form
+              v-model="isFormValid"
+              lazy-validation
+              ref="form"
+              @submit.prevent="handleSignInUser"
+            >
               <v-layout row>
                 <v-flex xs12>
                   <v-text-field
+                    :rules="usernameRules"
                     v-model="username"
                     prepend-icon="mdi-account"
                     label="Username"
@@ -32,6 +38,7 @@
               <v-layout row>
                 <v-flex xs12>
                   <v-text-field
+                    :rules="passwordRules"
                     v-model="password"
                     prepend-icon="mdi-lock"
                     label="Password"
@@ -43,7 +50,12 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs12>
-                  <v-btn :loading="loading" color="accent" type="submit">
+                  <v-btn
+                    :loading="loading"
+                    :disabled="!isFormValid"
+                    color="accent"
+                    type="submit"
+                  >
                     <span class="custom-loader">
                       <v-icon light>mdi-cached</v-icon>
                     </span>
@@ -70,8 +82,19 @@ export default {
   name: "SignIn",
   data() {
     return {
+      isFormValid: true,
       username: "",
-      password: ""
+      password: "",
+      usernameRules: [
+        username => !!username || "Username is required",
+        username =>
+          username.length < 10 || "Username must be less than 10 characters"
+      ],
+      passwordRules: [
+        password => !!password || "Password is required",
+        password =>
+          password.length > 7 || "Password must be greater than 7 characters"
+      ]
     };
   },
   computed: {
@@ -85,10 +108,12 @@ export default {
   },
   methods: {
     handleSignInUser() {
-      this.$store.dispatch("signInUser", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("signInUser", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   }
 };

@@ -15,7 +15,7 @@
         v-for="post in infiniteScrollPosts.posts"
         :key="post._id"
       >
-        <v-card hover>
+        <v-card hover @click.native="goToPost(post._id)">
           <v-img :src="post.imageUrl" height="30vh" lazy></v-img>
           <v-card-actions>
             <v-card-title primary>
@@ -97,6 +97,9 @@ export default {
     }
   },
   methods: {
+    goToPost(postId) {
+      this.$router.push(`/post/${postId}`);
+    },
     showMorePosts() {
       this.pageNum += 1;
       this.$apollo.queries.infiniteScrollPosts.fetchMore({

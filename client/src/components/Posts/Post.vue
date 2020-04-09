@@ -19,7 +19,6 @@
             <span>Click to enlarge image</span>
             <v-img
               @click="toggleImageDialog"
-              slot="activator"
               :src="getPost.imageUrl"
               id="post__image"
             >
@@ -47,16 +46,18 @@
     <div class="mt-3">
       <v-layout class="mb-3" v-if="user">
         <v-flex xs12>
-          <v-form>
+          <v-form @submit.prevent="handleAddPostMessage">
             <v-layout row>
               <v-flex xs12>
                 <v-text-field
                   clearable
-                  append-outer-icon="send"
+                  :append-outer-icon="messageBody && 'mdi-send'"
                   label="Add Message"
                   type="text"
-                  prepend-icon="email"
+                  prepend-icon="mdi-email"
                   required
+                  v-model="messageBody"
+                  @click:append-outer="handleAddPostMessage"
                 >
                 </v-text-field>
               </v-flex>
@@ -72,25 +73,25 @@
 
             <template v-for="message in getPost.messages">
               <v-divider :key="message._id"></v-divider>
-              <v-list-tile avatar inset :key="message.title">
-                <v-list-tile-avatar>
+              <v-list-item inset :key="message.title">
+                <v-list-item-avatar>
                   <v-img :src="message.messageUser.avatar" />
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    {{ message.mesageBody }}
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ message.messageBody }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
                     {{ message.messageUser.username }}
                     <span class="grey--text text--lighten-1 hidden-xs-only">
                       {{ message.messageDate }}
                     </span>
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action class="hidden-xs-only">
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action class="hidden-xs-only">
                   <v-icon color="grey">mdi-message</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </template>
           </v-list>
         </v-flex>
@@ -101,14 +102,15 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_POST } from "../../queries";
+import { GET_POST, ADD_POST_MESSAGE } from "../../queries";
 
 export default {
   name: "Post",
   props: ["postId"],
   data() {
     return {
-      dialog: false
+      dialog: false,
+      messageBody: ""
     };
   },
   apollo: {
@@ -127,6 +129,36 @@ export default {
   methods: {
     goToPreviousPage() {
       this.$router.go(-1);
+    },
+    handleAddPostMessage() {
+      const variables = {
+        messageBody: this.messageBody,
+        userId: this.user._id,
+        postId: this.postId
+      };
+      this.$apollo
+        .mutate({
+          mutation: ADD_POST_MESSAGE,
+          variables,
+          update: (cache, { data: { addPostMessage } }) => {
+            const data = cache.readQuery({
+              query: GET_POST,
+              variables: {
+                postId: this.postId
+              }
+            });
+            data.getPost.messages.unshift(addPostMessage);
+            cache.writeQuery({
+              query: GET_POST,
+              variables: { postId: this.postId },
+              data
+            });
+          }
+        })
+        .then(({ data }) => {
+          console.log(data.addPostMessage);
+        })
+        .catch(err => console.error(err));
     },
     toggleImageDialog() {
       if (window.innterWidth > 500) {

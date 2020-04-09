@@ -60,18 +60,18 @@ export const INFINITE_SCROLL_POSTS = gql`
 `;
 
 export const ADD_POST = gql`
-  mutation (
-    $title: String!,
-    $imageUrl: String!,
-    $categories: [String]!,
-    $description: String!,
+  mutation(
+    $title: String!
+    $imageUrl: String!
+    $categories: [String]!
+    $description: String!
     $creatorId: ID!
-  ){
-    addPost (
-      title: $title,
-      imageUrl: $imageUrl,
-      categories: $categories,
-      description: $description,
+  ) {
+    addPost(
+      title: $title
+      imageUrl: $imageUrl
+      categories: $categories
+      description: $description
       creatorId: $creatorId
     ) {
       title

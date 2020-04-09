@@ -94,7 +94,7 @@ export default new Vuex.Store({
             }
           }
         })
-        .then( data => {
+        .then(data => {
           console.log(data);
           commit("setLoading", false);
           //localStorage.setItem("token", data.signinUser.token);

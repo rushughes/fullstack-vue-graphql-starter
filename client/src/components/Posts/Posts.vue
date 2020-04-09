@@ -117,15 +117,12 @@ export default {
           return {
             infiniteScrollPosts: {
               __typename: prevResult.infiniteScrollPosts.__typename,
-              posts: [
-                ...prevResult.infiniteScrollPosts.posts,
-                ...newPosts
-              ],
+              posts: [...prevResult.infiniteScrollPosts.posts, ...newPosts],
               hasMore
             }
-          }
+          };
         }
-      })
+      });
     }
   }
 };

@@ -68,8 +68,23 @@
         color="accent"
         single-line
         high-details
+        v-model="searchTerm"
+        @input="handleSearchPosts"
       >
       </v-text-field>
+
+      <v-card dark v-if="searchResults && searchResults.length" id="search__card">
+        <v-list>
+          <v-list-item v-for="result in searchResults" :key="result._id">
+            <v-list-item-title>
+              {{ result.title }}
+              <span class="font-weight-thin">
+                {{ result.description }}
+              </span>
+            </v-list-item-title>
+        </v-list-item>
+        </v-list>
+      </v-card>
 
       <v-spacer></v-spacer>
 
@@ -142,7 +157,8 @@ export default {
       sideNav: false,
       authSnackbar: false,
       authErrorSnackbar: false,
-      badgeAnimated: false
+      badgeAnimated: false,
+      searchTerm: ''
     };
   },
   watch: {
@@ -164,7 +180,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user", "authError", "userFavourites"]),
+    ...mapGetters(["user", "authError", "userFavourites", "searchResults"]),
     horizontalNavItems() {
       let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
@@ -198,6 +214,11 @@ export default {
     }
   },
   methods: {
+    handleSearchPosts() {
+      this.$store.dispatch("searchPosts", {
+        searchTerm: this.searchTerm
+      });
+    },
     handleSignOutUser() {
       this.$store.dispatch("signOutUser");
     },
@@ -223,6 +244,14 @@ export default {
 .fade-leave-active {
   opacity: 0;
 }
+#search__card {
+  position: absolute;
+  width: 100vw;
+  z-index: 8;
+  top: 100%;
+  left: 0%;
+}
+
 
 .bounce {
   animation: bounce 1s both;

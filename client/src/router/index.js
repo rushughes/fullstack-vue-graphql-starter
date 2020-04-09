@@ -23,16 +23,16 @@ const routes = [
     component: Posts
   },
   {
-    path: "/post/:postId",
-    name: "Post",
-    component: Post,
-    props: true
-  },
-  {
     path: "/post/add",
     name: "AddPost",
     component: AddPost,
     beforeEnter: AuthGuard
+  },
+  {
+    path: "/post/:postId",
+    name: "Post",
+    component: Post,
+    props: true
   },
   {
     path: "/profile",

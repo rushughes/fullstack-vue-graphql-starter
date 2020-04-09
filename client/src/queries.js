@@ -84,24 +84,6 @@ export const ADD_POST = gql`
   }
 `;
 
-export const GET_CURRENT_USER = gql`
-  query {
-    getCurrentUser {
-      _id
-      username
-      email
-      password
-      avatar
-      joinDate
-      favourites {
-        _id
-        title
-        imageUrl
-      }
-    }
-  }
-`;
-
 export const ADD_POST_MESSAGE = gql`
   mutation($messageBody: String!, $userId: ID!, $postId: ID!) {
     addPostMessage(
@@ -116,6 +98,50 @@ export const ADD_POST_MESSAGE = gql`
         _id
         username
         avatar
+      }
+    }
+  }
+`;
+
+export const LIKE_POST = gql`
+  mutation($postId: ID!, $username: String!) {
+    likePost(postId: $postId, username: $username) {
+      likes
+      favourites {
+        _id
+        title
+        imageUrl
+      }
+    }
+  }
+`;
+
+export const UNLIKE_POST = gql`
+  mutation($postId: ID!, $username: String!) {
+    unlikePost(postId: $postId, username: $username) {
+      likes
+      favourites {
+        _id
+        title
+        imageUrl
+      }
+    }
+  }
+`;
+
+export const GET_CURRENT_USER = gql`
+  query {
+    getCurrentUser {
+      _id
+      username
+      email
+      password
+      avatar
+      joinDate
+      favourites {
+        _id
+        title
+        imageUrl
       }
     }
   }

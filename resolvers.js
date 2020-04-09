@@ -87,6 +87,40 @@ module.exports = {
       });
       return post.messages[0];
     },
+    likePost: async(parent, { postId, username }, { Post, User }) => {
+      // find Post, add 1 to it's like value
+      const post = await Post.findOneAndUpdate(
+        { _id: postId },
+        { $inc: { likes: 1 } },
+        { new: true }
+      );
+      const user = await User.findOneAndUpdate(
+        { username },
+        { $addToSet: { favourites: postId } },
+        { new: true }
+      ).populate({
+        path: 'favourites',
+        model: 'Post'
+      });
+      return { likes: post.likes, favourites: user.favourites };
+    },
+    unlikePost: async(parent, { postId, username }, { Post, User }) => {
+      // find Post, add 1 to it's like value
+      const post = await Post.findOneAndUpdate(
+        { _id: postId },
+        { $inc: { likes: -1 } },
+        { new: true }
+      );
+      const user = await User.findOneAndUpdate(
+        { username },
+        { $pull: { favourites: postId } },
+        { new: true }
+      ).populate({
+        path: 'favourites',
+        model: 'Post'
+      });
+      return { likes: post.likes, favourites: user.favourites };
+    },
     signinUser: async (parent, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) {

@@ -5,8 +5,13 @@
         <v-card hover>
           <v-card-title>
             <h1>{{ getPost.title }}</h1>
-            <v-btn large icon v-if="user" @click="handleLikePost">
-              <v-icon large color="grey">mdi-heart</v-icon>
+            <v-btn large icon v-if="user" @click="handleToggleLike">
+              <v-icon
+                large
+                :color="checkIfPostLiked(getPost._id) ? 'red' : 'grey'"
+              >
+                mdi-heart
+              </v-icon>
             </v-btn>
             <h3 class="ml-3 font-weight-thin">{{ getPost.likes }} Likes</h3>
             <v-spacer></v-spacer>
@@ -131,7 +136,8 @@ export default {
         message => !!message || "Message is required",
         message =>
           message.length < 50 || "Message must be less than 50 characters"
-      ]
+      ],
+      postLiked: false
     };
   },
   apollo: {
@@ -145,11 +151,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "userFavourites"])
   },
   methods: {
     checkIfOwnMessage(message) {
       return this.user && this.user._id === message.messageUser._id;
+    },
+    checkIfPostLiked(postId) {
+      if (
+        this.userFavourites &&
+        this.userFavourites.some(fave => fave._id === postId)
+      ) {
+        this.postLiked = true;
+        return true;
+      } else {
+        this.postLiked = false;
+        return false;
+      }
     },
     goToPreviousPage() {
       this.$router.go(-1);
@@ -190,6 +208,7 @@ export default {
         postId: this.postId,
         username: this.user.username
       };
+      console.log("Variables", variables);
       this.$apollo
         .mutate({
           mutation: LIKE_POST,
@@ -208,8 +227,11 @@ export default {
           }
         })
         .then(({ data }) => {
-          const updatedUser = { ...this.user, favourites: data.likePost.favourites };
-          this.$store.commit('setUser', updatedUser);
+          const updatedUser = {
+            ...this.user,
+            favourites: data.likePost.favourites
+          };
+          this.$store.commit("setUser", updatedUser);
         })
         .catch(err => console.error(err));
     },
@@ -236,10 +258,20 @@ export default {
           }
         })
         .then(({ data }) => {
-          const updatedUser = { ...this.user, favourites: data.likePost.favourites };
-          this.$store.commit('setUser', updatedUser);
+          const updatedUser = {
+            ...this.user,
+            favourites: data.unlikePost.favourites
+          };
+          this.$store.commit("setUser", updatedUser);
         })
         .catch(err => console.error(err));
+    },
+    handleToggleLike() {
+      if (this.postLiked) {
+        this.handleUnlikePost();
+      } else {
+        this.handleLikePost();
+      }
     },
     toggleImageDialog() {
       if (window.innterWidth > 500) {

@@ -56,6 +56,18 @@ module.exports = {
         posts,
         hasMore
       };
+    },
+    searchPosts: async (parent, { searchTerm }, { Post }) => {
+        if (searchTerm) {
+          const searchResults = await Post.find(
+            { $text: { $search: searchTerm } },
+            { score: { $meta: 'textScore' } }
+          ).sort({
+            score: { $meta: 'textScore' },
+            likes: 'desc'
+          }).limit(5);
+          return searchResults;
+        }
     }
   },
   Mutation: {

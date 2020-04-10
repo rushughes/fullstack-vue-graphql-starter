@@ -75,13 +75,22 @@
 
       <v-card dark v-if="searchResults && searchResults.length" id="search__card">
         <v-list>
-          <v-list-item v-for="result in searchResults" :key="result._id">
+          <v-list-item
+            @click="goToSearchResult(result._id)"
+            v-for="result in searchResults"
+            :key="result._id"
+          >
             <v-list-item-title>
               {{ result.title }}
               <span class="font-weight-thin">
-                {{ result.description }}
+                {{ formatDescription(result.description) }}
               </span>
             </v-list-item-title>
+
+            <v-list-item-action v-if="checkIfUserFavourite(result._id)">
+              <v-icon>mdi-heart</v-icon>
+            </v-list-item-action>
+
         </v-list-item>
         </v-list>
       </v-card>
@@ -214,6 +223,17 @@ export default {
     }
   },
   methods: {
+    checkIfUserFavourite(resultId) {
+      return this.userFavourites && this.userFavourites.some(fave => fave._id === resultId);
+    },
+    formatDescription(desc) {
+      return desc.length > 20 ? `{desc.slice(0,20)}...` : desc;
+    },
+    goToSearchResult(resultId) {
+      this.searchTerm = '';
+      this.$router.push(`/post/${resultId}`);
+      this.$store.commit('clearSearchResults');
+    },
     handleSearchPosts() {
       this.$store.dispatch("searchPosts", {
         searchTerm: this.searchTerm

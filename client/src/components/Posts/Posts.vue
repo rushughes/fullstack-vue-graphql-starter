@@ -45,7 +45,7 @@
 
           <v-slide-y-transition>
             <v-card-text v-show="showPostCreator" class="grey lighten-4">
-              <v-list-item avatar>
+              <v-list-item>
                 <v-list-item-avatar>
                   <img :src="post.createdBy.avatar" />
                 </v-list-item-avatar>
@@ -54,7 +54,7 @@
                     {{ post.createdBy.username }}
                   </v-list-item-title>
                   <v-list-item-subtitle class="font-weight-thin">
-                    Added {{ post.createdDate }}
+                    Added {{ formatCreatedDate(post.createdDate) }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { INFINITE_SCROLL_POSTS } from "../../queries";
 
 const pageSize = 2;
@@ -106,6 +107,9 @@ export default {
   methods: {
     goToPost(postId) {
       this.$router.push(`/post/${postId}`);
+    },
+    formatCreatedDate(date) {
+      return moment(parseInt(date)).format("ll");
     },
     showMorePosts() {
       this.pageNum += 1;

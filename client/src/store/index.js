@@ -84,7 +84,7 @@ export default new Vuex.Store({
           console.error("ERROR", err);
         });
     },
-    getUserPosts: ({ commit }, payload ) => {
+    getUserPosts: ({ commit }, payload) => {
       commit("setLoading", true);
       apolloClient
         .query({
@@ -100,7 +100,7 @@ export default new Vuex.Store({
           console.error("ERROR", err);
         });
     },
-    searchPosts: ({ commit }, payload ) => {
+    searchPosts: ({ commit }, payload) => {
       commit("setLoading", true);
       apolloClient
         .query({

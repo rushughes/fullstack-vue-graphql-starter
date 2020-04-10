@@ -73,7 +73,11 @@
       >
       </v-text-field>
 
-      <v-card dark v-if="searchResults && searchResults.length" id="search__card">
+      <v-card
+        dark
+        v-if="searchResults && searchResults.length"
+        id="search__card"
+      >
         <v-list>
           <v-list-item
             @click="goToSearchResult(result._id)"
@@ -90,8 +94,7 @@
             <v-list-item-action v-if="checkIfUserFavourite(result._id)">
               <v-icon>mdi-heart</v-icon>
             </v-list-item-action>
-
-        </v-list-item>
+          </v-list-item>
         </v-list>
       </v-card>
 
@@ -167,7 +170,7 @@ export default {
       authSnackbar: false,
       authErrorSnackbar: false,
       badgeAnimated: false,
-      searchTerm: ''
+      searchTerm: ""
     };
   },
   watch: {
@@ -224,15 +227,18 @@ export default {
   },
   methods: {
     checkIfUserFavourite(resultId) {
-      return this.userFavourites && this.userFavourites.some(fave => fave._id === resultId);
+      return (
+        this.userFavourites &&
+        this.userFavourites.some(fave => fave._id === resultId)
+      );
     },
     formatDescription(desc) {
       return desc.length > 20 ? `{desc.slice(0,20)}...` : desc;
     },
     goToSearchResult(resultId) {
-      this.searchTerm = '';
+      this.searchTerm = "";
       this.$router.push(`/post/${resultId}`);
-      this.$store.commit('clearSearchResults');
+      this.$store.commit("clearSearchResults");
     },
     handleSearchPosts() {
       this.$store.dispatch("searchPosts", {
@@ -271,7 +277,6 @@ export default {
   top: 100%;
   left: 0%;
 }
-
 
 .bounce {
   animation: bounce 1s both;

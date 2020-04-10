@@ -73,17 +73,17 @@
       <v-layout row wrap>
         <v-flex xs12 sm6 v-for="post in userPosts" :key="post._id">
           <v-card class="mt-3 ml-1 mr-2" hover>
+            <v-btn color="info" floating fab small dark @click="loadPost(post)">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
             <v-btn
-              color="info"
+              color="error"
               floating
               fab
               small
               dark
-              @click="loadPost(post)"
+              @click="handleDeleteUserPost(post)"
             >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn color="error" floating fab small dark>
               <v-icon>mdi-delete</v-icon>
             </v-btn>
             <v-img height="30vh" :src="post.imageUrl"></v-img>
@@ -155,7 +155,14 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn :disable="!isFormValid" type="submit" class="success--text" flat>Update</v-btn>
+              <v-btn
+                :disable="!isFormValid"
+                type="submit"
+                class="success--text"
+                flat
+              >
+                Update
+              </v-btn>
               <v-btn class="error--text" flat @click="editPostDialog = false">
                 Cancel
               </v-btn>
@@ -204,6 +211,17 @@ export default {
     this.handleGetUserPosts();
   },
   methods: {
+    handleDeleteUserPost(post) {
+      this.loadPost(post, false);
+      const deletePost = window.confirm(
+        "Are you sure you want to delete this post?"
+      );
+      if (deletePost) {
+        this.$store.dispatch("deleteUserPost", {
+          postId: this.postId
+        });
+      }
+    },
     handleGetUserPosts() {
       this.$store.dispatch("getUserPosts", {
         userId: this.user._id
@@ -223,7 +241,7 @@ export default {
       }
     },
     loadPost(
-      { _id, title, imageUrl, categories, description},
+      { _id, title, imageUrl, categories, description },
       editPostDialog = true
     ) {
       this.editPostDialog = editPostDialog;

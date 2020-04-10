@@ -129,7 +129,13 @@
 
             <v-select
               v-model="categories"
-              :items="['Art', 'Education', 'Travel', 'Photography', 'Technology']"
+              :items="[
+                'Art',
+                'Education',
+                'Travel',
+                'Photography',
+                'Technology'
+              ]"
               multiple
               label="Categories"
               :rules="categoriesRules"
@@ -203,9 +209,7 @@ export default {
         userId: this.user._id
       });
     },
-    handleUpdateUserPost() {
-
-    }
+    handleUpdateUserPost() {}
   }
 };
 </script>

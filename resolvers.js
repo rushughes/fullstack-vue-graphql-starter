@@ -88,7 +88,7 @@ module.exports = {
       return newPost;
     },
     updateUserPost: async (parent, { postId, userId, title, description, imageUrl, categories }, { Post }) => {
-      const post = await new Post.findOneAndUpdate(
+      const post = await Post.findOneAndUpdate(
         {
           _id: postId,
           createdBy: userId

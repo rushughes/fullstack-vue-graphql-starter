@@ -233,7 +233,7 @@ export default {
       );
     },
     formatDescription(desc) {
-      return desc.length > 20 ? `{desc.slice(0,20)}...` : desc;
+      return desc.length > 20 ? desc.slice(0,20) : desc;
     },
     goToSearchResult(resultId) {
       this.searchTerm = "";

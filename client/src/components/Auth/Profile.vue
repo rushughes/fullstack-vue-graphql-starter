@@ -79,7 +79,7 @@
               fab
               small
               dark
-              @click="editPostDialog = true"
+              @click="loadPost(post)"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
@@ -155,7 +155,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn type="submit" class="success--text" flat>Update</v-btn>
+              <v-btn :disable="!isFormValid" type="submit" class="success--text" flat>Update</v-btn>
               <v-btn class="error--text" flat @click="editPostDialog = false">
                 Cancel
               </v-btn>
@@ -209,7 +209,30 @@ export default {
         userId: this.user._id
       });
     },
-    handleUpdateUserPost() {}
+    handleUpdateUserPost() {
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("updateUserPost", {
+          postId: this.postId,
+          userId: this.user._id,
+          title: this.title,
+          imageUrl: this.imageUrl,
+          categories: this.categories,
+          description: this.description
+        });
+        this.editPostDialog = false;
+      }
+    },
+    loadPost(
+      { _id, title, imageUrl, categories, description},
+      editPostDialog = true
+    ) {
+      this.editPostDialog = editPostDialog;
+      this.postId = _id;
+      this.title = title;
+      this.imageUrl = imageUrl;
+      this.categories = categories;
+      this.description = description;
+    }
   }
 };
 </script>
